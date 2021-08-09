@@ -1,7 +1,7 @@
 package com.example.webmvc.controllers;
 
-import com.example.webmvc.controllers.pojos.Pojo1;
-import com.example.webmvc.controllers.pojos.Pojo2;
+import com.example.webmvc.pojos.Pojo1;
+import com.example.webmvc.pojos.Pojo2;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class DemoController2 {
 
-    @GetMapping(value="rest")
+    @GetMapping(value="/app/rest")
     public Pojo1 rest(){
         Pojo1 p = new Pojo1();
         p.setS1("value1");
