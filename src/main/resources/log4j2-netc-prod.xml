@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config">
+
+    <Properties>
+        <Property name="parentPath">/log</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{%-5p} | %style{%d{yyyy-MM-dd HH:mm:ss.SSS+05:30}}{cyan} | %style{${main:0}}{cyan} | %style{%X{PaytmRequestId}}{green} | %style{%X{OrderId}}{cyan} | %style{%X{CustomerId}}{green} | %style{[%t]}{cyan} | %style{%X{ClassName}}{green} | %marker | %4X{LineNo} | %m%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile"
+                                 fileName="${parentPath}/fastag-acquirer-${main:0}/${hostName}_application_json.log"
+                                 filePattern="${parentPath}/fastag-acquirer-${main:0}/archive/${hostName}_application_json-%d{yyyy-MM-dd'T'HH:mm:ss}-%i.log.gz">
+
+            <JSONLayout complete="false" compact="true" eventEol="true" properties="true" stacktraceAsString="true">
+                <KeyValuePair key="time" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSS+05:30}"/>
+                <KeyValuePair key="hostname" value="${hostName}"/>
+                <KeyValuePair key="servicename" value="${main:0}"/>
+            </JSONLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="3600" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+
+        <!--        <Async name="AsyncLogs">-->
+        <!--            <AppenderRef ref="RollingRandomAccessFile" />-->
+        <!--            <AppenderRef ref="STDOUT" />-->
+        <!--        </Async>-->
+
+        <Async name="AsyncLogs">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </Async>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="AsyncLogs"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

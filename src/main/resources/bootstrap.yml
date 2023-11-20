@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: fastag-acquirer/common-infra,fastag-acquirer/fastag-netc-engine
+  cloud:
+    vault:
+      host: ${VAULT_HOST}
+      port: ${VAULT_PORT}
+      scheme: http
+      authentication: APPROLE
+      app-role:
+        role-id: ${VAULT_ROLE_ID}
+        secret-id: ${VAULT_SECRET_ID}
+        role: ${VAULT_ROLE_NAME}
+        app-role-path: approle
+      kv:
+        enabled: true
+        backend: ${VAULT_SECRET_PATH}
